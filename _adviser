@@ -1,0 +1,35 @@
+Project: Neurysteria
+Description: Emotional self-organizing neural network simulation with Clean Architecture
+
+Root Maven Modules:
+- neurysteria-domain
+- neurysteria-application
+- neurysteria-infrastructure
+
+---
+
+📦 domain
+| Package     | Purpose                                              |  Classes           |
+|-------------|------------------------------------------------------|---------------------|
+
+
+📦 application
+| Package     | Purpose                          | Example Classes               |
+|-------------|----------------------------------|-------------------------------|
+
+---
+
+📦 infrastructure
+| Package     | Purpose                           | Example Classes         |
+|-------------|-----------------------------------|---------------------------|
+
+---
+
+✔ Rules:
+- No static fields for configuration/state
+- All mutation logic flows from `NeuronParameters`
+- NetworkMood affects NeuronFactory via `mutationMultiplier`
+- Config is passed through dependency injection
+
+This file will be updated as we implement and organize new classes. Currently starting from zero (no files yet).
+
