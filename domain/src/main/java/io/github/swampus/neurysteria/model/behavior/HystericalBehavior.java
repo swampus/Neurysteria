@@ -60,6 +60,10 @@ public class HystericalBehavior implements NetworkBehaviorStrategy {
                 log.info("🌀 Neural prophet {} gave birth to disciple {}", neuron.getId(), newborn.getId());
             }
 
+            if (Math.random() < 0.9) {
+                neuron.attackEnemies();
+            }
+
             if (Math.random() < 0.3) {
                 neuron.clearConnectionsRandomly();
             }
