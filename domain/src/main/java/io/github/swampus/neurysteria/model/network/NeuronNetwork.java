@@ -31,6 +31,13 @@ public class NeuronNetwork {
     private final NeuronTerminationService neuronTerminationService;
     private final Map<EmotionState, NetworkBehaviorStrategy> behaviorMap;
 
+    private int hystericalTicks = 0;
+    private final int maxHystericalTicks = 20;
+
+    private EmotionState lastEvaluatedState = EmotionState.CALM;
+    private int stableTicks = 0;
+    private final int requiredStableTicks = 10;
+
     public NeuronNetwork(List<Neuron> neurons, NeuronMutationService mutationService,
                          NeuronTerminationService neuronTerminationService) {
         this.neurons = neurons;
@@ -63,12 +70,12 @@ public class NeuronNetwork {
         if (isObsessed()) {
             obsessionTicksRemaining--;
             if (obsessionTicksRemaining <= 0) {
-                currentState = EmotionState.CALM;
-                log.info("""
-                            ☀️ Crusade alignment complete.
-                            ➤ Network restored to functional sanity.
-                            ➤ Heretical thought patterns purged.
-                        """);
+                updateState(EmotionState.CALM);
+                log.error("""
+                    ☀️ Crusade alignment complete.
+                    ➤ Network restored to functional sanity.
+                    ➤ Heretical thought patterns purged.
+                """);
             }
         }
     }
@@ -79,30 +86,50 @@ public class NeuronNetwork {
                 .count();
 
         double ratio = (double) angryCount / neurons.size();
-
-        if (ratio > hystericalThresholdRatio) {
-            currentState = EmotionState.HYSTERICAL;
-        } else if (ratio > angryThresholdRatio) {
-            currentState = EmotionState.ANGRY;
-        } else {
-            currentState = EmotionState.CALM;
-        }
-
         double averageRage = getAverageRage();
 
-        if (neurons.size() % 9 == 0 && averageRage > config.rageThresholdForObsession()) {
+        EmotionState evaluated;
+        if (averageRage > 20 || ratio > 0.5) {
+            evaluated = EmotionState.HYSTERICAL;
+        } else if (averageRage > 10 || ratio > 0.2) {
+            evaluated = EmotionState.ANGRY;
+        } else {
+            evaluated = EmotionState.CALM;
+        }
+
+        if (neurons.size() % 666 == 0 &&
+                averageRage > config.rageThresholdForObsession()) {
             currentState = EmotionState.OBSESSED;
             obsessionTicksRemaining = config.holyCyclesOfCrusadeAlignment();
+            log.error("""
+            ⚠️⚠️⚠️
+            🔱 SANCTUS COGITATIO CRUSADAE 🔱
+            ➤ Crusade cycles: {}
+            ➤ Thought purity override active.
+            """, obsessionTicksRemaining);
+            return;
+        }
 
-            log.warn("""
-                    ⚠️⚠️⚠️
-                    🔱 SANCTUS COGITATIO CRUSADAE 🔱
-                    Initiating holy crusade alignment.
-                    ➤ Alignment cycles: {}
-                    ➤ Thought purity override active.
-                    ➤ Praise be to the Divine Clockwork.
-                    """, obsessionTicksRemaining);
+        if (evaluated == lastEvaluatedState) {
+            stableTicks++;
+            if (stableTicks >= requiredStableTicks && evaluated != currentState) {
+                log.info("🧠 Network state changed: {} → {}", currentState, evaluated);
+                currentState = evaluated;
+            }
+        } else {
+            stableTicks = 1;
+            lastEvaluatedState = evaluated;
+        }
 
+        if (currentState == EmotionState.HYSTERICAL) {
+            hystericalTicks++;
+            if (hystericalTicks >= maxHystericalTicks) {
+                updateState(EmotionState.CALM);
+                hystericalTicks = 0;
+                log.error("Hysteria exhausted. Network forcefully returned to sanity.");
+            }
+        } else {
+            hystericalTicks = 0;
         }
     }
 
@@ -137,6 +164,13 @@ public class NeuronNetwork {
     public void calmAllNeurons(double calmAmount) {
         for (var neuron : neurons) {
             neuron.setRage(Math.max(0, neuron.getRage() - calmAmount));
+        }
+    }
+
+    private void updateState(EmotionState newState) {
+        if (this.currentState != newState) {
+            log.error(" Network state changed: {} → {}", this.currentState, newState);
+            this.currentState = newState;
         }
     }
 }

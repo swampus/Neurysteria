@@ -4,7 +4,6 @@ import io.github.swampus.neurysteria.model.network.NeuronNetwork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 
 public class SequencePredictionTask implements Task {
 
@@ -20,16 +19,6 @@ public class SequencePredictionTask implements Task {
         }
     }
 
-
-    @Override
-    public List<Integer[]> getSuggestedConnections() {
-        return List.of(
-                new Integer[]{0, 2},
-                new Integer[]{1, 2},
-                new Integer[]{2, 4},
-                new Integer[]{3, 4}
-        );
-    }
 
     @Override
     public void evaluate(NeuronNetwork network) {

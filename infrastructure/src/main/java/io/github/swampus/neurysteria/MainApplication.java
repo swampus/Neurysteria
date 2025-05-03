@@ -21,9 +21,7 @@ public class MainApplication {
     public static void main(String[] args) {
         log.info("🧠 Neurysteria Booting Up...");
 
-        var lossJudge = new EmotionDrivenLossJudge(1.0, 0.0);
-
-
+        EmotionDrivenLossJudge lossJudge = new EmotionDrivenLossJudge(1, 0.5); // был 1.0
 
         UseCaseFactory factory = new UseCaseFactory();
 
@@ -31,12 +29,12 @@ public class MainApplication {
                 .rageThreshold(10)
                 .hysteriaThreshold(20)
                 .rageFromNegativeInput(0.1)
-                .rageDecayPerTick(0.8)                 // быстро выходит из злобы
-                .activationDecayPerTick(0.01)          // почти не теряет активацию
+                .rageDecayPerTick(0.8)
+                .activationDecayPerTick(0.01)
                 .angerImpactOnEnemies(0.05)
-                .calmShareToFriends(0.3) // раньше было 0.05
+                .calmShareToFriends(0.3)
                 .allowMutation(true)
-                .mutationChance(0.2)                  // не бешеная мутация
+                .mutationChance(0.2)
                 .deathChanceFromRage(0.05)
                 .baseActivationThreshold(0.5)
                 .activationFunction(ActivationFunctions.RELU)
@@ -53,25 +51,29 @@ public class MainApplication {
 
         Task task = TaskFactory.create(type);
 
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 10000; i++) {
 
             task.injectInputs(network);
             EmotionState state = ticker.executeTick();
             task.evaluate(network);
 
-            if (i % 20 == 0) {
+            if (i % 2 == 0) {
                 TraceLog.dumpNetworkState(i, network);
             }
 
-            lossJudge.evaluateAndReact(network, task); // 💥 оценка + эмоции
+            lossJudge.evaluateAndReact(network, task);
 
             // log.info("Tick {} → {}", i, state);
 
             if (task.isSolved()) {
-                log.error("🎯 \n \n Task solved at tick {} \n \n", i);
+                log.error(" \n \n !!!!!!! Task solved at tick {} \n \n !!!!!", i);
                 break;
             }
         }
+        if(!task.isSolved()){
+            log.error(" \n NETWORK FAILED \n ");
+        }
+
     }
 }
 

@@ -6,11 +6,11 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Multi-step chain task:
- *  Step 0: Neuron 0 receives 2
- *  Step 1: Neuron 1 receives 3
- *  Step 2: Neuron 2 should output 5 = (2 + 3)
- *  Step 3: Neuron 3 receives 4
- *  Step 4: Neuron 4 should output 20 = (5 * 4)
+ * Step 0: Neuron 0 receives 2
+ * Step 1: Neuron 1 receives 3
+ * Step 2: Neuron 2 should output 5 = (2 + 3)
+ * Step 3: Neuron 3 receives 4
+ * Step 4: Neuron 4 should output 20 = (5 * 4)
  */
 public class ChainCalculationTask implements Task {
 
@@ -47,36 +47,40 @@ public class ChainCalculationTask implements Task {
 
     @Override
     public void evaluate(NeuronNetwork network) {
-
-        if (network.isObsessed()) {
-            log.warn("🤖 Network is obsessed. It believes it solved the task.");
-            return;
-        }
-
         var neurons = network.getNeurons();
         if (neurons.size() < 5) return;
 
-        // 5
         double expectedIntermediate = inputA + inputB;
+        double expectedFinal = expectedIntermediate * inputC;
+
+        // Шаг 2 — проверка суммы
         if (step == 2) {
-            var output = neurons.get(2).getActivation();
-            if (Math.abs(output - expectedIntermediate) < 1.0) {
-                log.info("✅ Step 2 passed: {} ≈ {}", output, expectedIntermediate);
+            var out = neurons.get(2);
+            double value = out.getActivation();
+            if (Math.abs(value - expectedIntermediate) < 1.0) {
+                log.info("✅ Step 2 passed: {} ≈ {}", value, expectedIntermediate);
+                // Подсказка: кого стоит слушать
+                out.addFriend(neurons.get(0));
+                out.addFriend(neurons.get(1));
+                neurons.get(0).addFriend(out);
+                neurons.get(1).addFriend(out);
             } else {
-                log.warn("❌ Step 2 failed: {} ≠ {}", output, expectedIntermediate);
+                log.warn("❌ Step 2 failed: {} ≠ {}", value, expectedIntermediate);
             }
         }
 
-        if (step == 5) {
-            var output = neurons.get(4).getActivation();
-            // 20
-            double expectedFinal = expectedIntermediate * inputC;
-            if (Math.abs(output - expectedFinal) < 2.0) {
-                log.info("✅ ChainCalculationTask solved! Final output: {}", output);
-                solved = true;
-            } else {
-                log.warn("❌ Final output incorrect: {} ≠ {}", output, expectedFinal);
-            }
+        var out = neurons.get(4);
+        double value = out.getActivation();
+        if (Math.abs(value - expectedFinal) < 2.0) {
+            log.info("✅ FINAL solved! {} ≈ {}", value, expectedFinal);
+            // Усилим связи
+            out.addFriend(neurons.get(2));
+            out.addFriend(neurons.get(3));
+            neurons.get(2).addFriend(out);
+            neurons.get(3).addFriend(out);
+            solved = true;
+        } else {
+            log.warn("❌ Final output incorrect: {} ≠ {}", value, expectedFinal);
         }
     }
 
