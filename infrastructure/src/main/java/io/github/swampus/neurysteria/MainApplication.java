@@ -49,11 +49,11 @@ public class MainApplication {
 
         var ticker = factory.createTickNetworkUseCase(network);
 
-        TaskType type = TaskType.BROKEN_SEQUENCE;
+        TaskType type = TaskType.CHAIN_CALCULATOR;
 
         Task task = TaskFactory.create(type);
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1000000; i++) {
 
             task.injectInputs(network);
             EmotionState state = ticker.executeTick();
