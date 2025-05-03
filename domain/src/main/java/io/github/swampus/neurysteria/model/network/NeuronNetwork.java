@@ -9,6 +9,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -107,7 +108,6 @@ public class NeuronNetwork {
             case HYSTERICAL -> {
                 for (Neuron neuron : neurons) {
                     mutationService.attemptMutation(neuron);
-                    //log.debug("🧬 Attempting mutation on neuron {}", neuron.getId());
                 }
             }
             case CALM, ANGRY -> {

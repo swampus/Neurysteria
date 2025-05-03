@@ -31,18 +31,29 @@ public class NeuronLifecycleService {
 
         newNeuron.setRage(rand(profile.getAngryRageMin(), profile.getAngryRageMax()));
 
+
         if (state == EmotionState.HYSTERICAL && profile.isRandomizeActivationFunctionInHysteria()) {
             newNeuron.setActivationFunction(ActivationFunctions.random());
         }
 
         List<Neuron> usefulPeers = network.getNeurons().stream()
                 .filter(n -> n != oldNeuron)
-                .filter(n -> n.getActivation() > 1.0)
-                .filter(n -> n.getRage() < 5.0)
+                .filter(n -> n.getActivation() > 1)
+                .filter(n -> n.getRage() < 5)
                 .toList();
 
         if (usefulPeers.isEmpty()) {
-            log.warn("⚠️ Newborn {} has no useful peers to connect", newNeuron.getId());
+            log.warn("⚠️ Newborn {} has no useful peers → fallback to random", newNeuron.getId());
+            List<Neuron> fallback = network.getNeurons().stream()
+                    .filter(n -> n != oldNeuron)
+                    .limit(5)
+                    .toList();
+
+            for (Neuron peer : fallback) {
+                newNeuron.addFriend(peer);
+                peer.addFriend(newNeuron);
+            }
+
             return newNeuron;
         }
 

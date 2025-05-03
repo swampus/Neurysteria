@@ -31,6 +31,7 @@ public class Neuron {
         this.activation = 0.0;
         this.rage = 0.0;
         this.config = config;
+        this.activationFunction = config.activationFunction();
     }
 
     public void stimulate(double input) {

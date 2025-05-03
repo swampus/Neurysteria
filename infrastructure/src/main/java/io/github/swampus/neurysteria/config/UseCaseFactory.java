@@ -5,24 +5,22 @@ import io.github.swampus.neurysteria.model.Neuron;
 import io.github.swampus.neurysteria.model.network.NeuronNetwork;
 import io.github.swampus.neurysteria.service.NeuronLifecycleService;
 import io.github.swampus.neurysteria.service.NeuronMutationService;
+import io.github.swampus.neurysteria.service.NeuronTerminationService;
 
 import java.util.List;
-
 
 public class UseCaseFactory {
 
     private final BirthProfileRegistry birthRegistry;
-    private final NeuronLifecycleService lifecycle;
     private final NeuronMutationService mutationService;
+    private final NeuronLifecycleService lifecycleService;
+    private final NeuronTerminationService neuronTerminationService;
 
     public UseCaseFactory() {
         this.birthRegistry = BirthProfileLoader.loadAllProfiles();
-        this.lifecycle = new NeuronLifecycleService(birthRegistry);
         this.mutationService = new NeuronMutationService();
-    }
-
-    public NeuronDeathUseCase createNeuronDeathUseCase() {
-        return new NeuronDeathUseCase(lifecycle);
+        this.lifecycleService = new NeuronLifecycleService(birthRegistry);
+        this.neuronTerminationService = new NeuronTerminationService(lifecycleService);
     }
 
     public CreateNeuronNetworkUseCase createCreateNetworkUseCase() {
@@ -30,10 +28,11 @@ public class UseCaseFactory {
     }
 
     public TickNetworkUseCase createTickNetworkUseCase(NeuronNetwork network) {
-        return new TickNetworkUseCase(network);
+        return new TickNetworkUseCase(network, neuronTerminationService);
     }
 
     public NeuronNetwork createNetworkWithMutationSupport(List<Neuron> neurons) {
         return new NeuronNetwork(neurons, mutationService);
     }
+
 }

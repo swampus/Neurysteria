@@ -1,18 +1,12 @@
-package io.github.swampus.neurosteria.usecase;
+package io.github.swampus.neurysteria.service;
 
 import io.github.swampus.neurysteria.model.Neuron;
 import io.github.swampus.neurysteria.model.network.NeuronNetwork;
-import io.github.swampus.neurysteria.service.NeuronLifecycleService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class NeuronDeathUseCase {
-
-    private static final Logger log = LoggerFactory.getLogger(NeuronDeathUseCase.class);
-
+public class NeuronTerminationService {
     private final NeuronLifecycleService lifecycle;
 
-    public NeuronDeathUseCase(NeuronLifecycleService lifecycle) {
+    public NeuronTerminationService(NeuronLifecycleService lifecycle) {
         this.lifecycle = lifecycle;
     }
 
@@ -26,7 +20,6 @@ public class NeuronDeathUseCase {
         if (index >= 0) {
             Neuron newborn = lifecycle.createNewNeuronReplacing(network, target);
             network.getNeurons().set(index, newborn);
-            log.info("💀 Neuron {} died. Replaced by {}", target.getId(), newborn.getId());
         }
     }
 }

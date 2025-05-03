@@ -22,6 +22,8 @@ public class TraceLog {
         sb.append("Angry neurons: ").append(angry).append("\n");
         sb.append("Avg rage: ").append(String.format("%.2f", avgRage)).append("\n");
         sb.append("Max activation: ").append(String.format("%.2f", maxActivation)).append("\n");
+        sb.append("STATE: ").append(String.format("%s", network.getCurrentState())).append("\n");
+
 
         if (neurons.size() > 3) {
             Neuron n3 = neurons.get(3);
@@ -29,9 +31,10 @@ public class TraceLog {
             sb.append("Neuron #3 rage: ").append(String.format("%.2f", n3.getRage())).append("\n");
             sb.append("Neuron #3 friends: ").append(n3.getFriends().size()).append("\n");
             sb.append("Neuron #3 enemies: ").append(n3.getEnemies().size()).append("\n");
+            sb.append("Activation Function: ").append(n3.getActivationFunction()).append("\n");
         }
 
         sb.append("------------------------------");
-        log.warn(sb.toString());
+        log.error(sb.toString());
     }
 }

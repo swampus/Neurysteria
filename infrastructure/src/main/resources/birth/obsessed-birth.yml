@@ -12,4 +12,8 @@ forgetConnectionChance: 0.3
 holyCyclesOfCrusadeAlignment: 156
 rageThresholdForObsession: 8.5
 
+activationDecayPerTick: 0.01
+
+activationFunction: LINEAR
+
 randomizeActivationFunctionInHysteria: true

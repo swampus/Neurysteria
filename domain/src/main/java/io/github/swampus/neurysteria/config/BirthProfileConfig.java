@@ -21,4 +21,6 @@ public class BirthProfileConfig {
 
     private int holyCyclesOfCrusadeAlignment;
     private double rageThresholdForObsession;
+    private double activationDecayPerTick;
+    private String activationFunction;
 }
