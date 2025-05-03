@@ -109,12 +109,20 @@ public class Neuron {
     public void interact() {
         if (isAngry()) {
             for (Neuron enemy : enemies) {
-                enemy.stimulate(-rage * config.angerImpactOnEnemies());
+                if (!enemy.equals(this)) {
+                    double damage = -rage * config.angerImpactOnEnemies();
+                    enemy.stimulate(damage);
+                }
             }
         } else {
             for (Neuron friend : friends) {
-                friend.stimulate(activation * config.calmShareToFriends());
+                double support = activation * config.calmShareToFriends();
+                friend.stimulate(support);
             }
+        }
+
+        if (rage > 1000.0) {
+            rage = 1000.0;
         }
     }
 

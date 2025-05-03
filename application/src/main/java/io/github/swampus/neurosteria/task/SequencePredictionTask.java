@@ -4,6 +4,8 @@ import io.github.swampus.neurysteria.model.network.NeuronNetwork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class SequencePredictionTask implements Task {
 
     private static final Logger log = LoggerFactory.getLogger(SequencePredictionTask.class);
@@ -12,11 +14,21 @@ public class SequencePredictionTask implements Task {
 
     @Override
     public void injectInputs(NeuronNetwork network) {
-        // Простейшее: добавим стимул нейронам с ID 0, 1, 2
         var neurons = network.getNeurons();
         for (int i = 0; i < inputSequence.length && i < neurons.size(); i++) {
             neurons.get(i).receiveInput(inputSequence[i]);
         }
+    }
+
+
+    @Override
+    public List<Integer[]> getSuggestedConnections() {
+        return List.of(
+                new Integer[]{0, 2},
+                new Integer[]{1, 2},
+                new Integer[]{2, 4},
+                new Integer[]{3, 4}
+        );
     }
 
     @Override

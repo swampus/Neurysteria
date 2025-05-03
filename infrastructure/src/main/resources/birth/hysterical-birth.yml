@@ -14,6 +14,6 @@ rageThresholdForObsession: 8.5
 
 activationDecayPerTick: 0.01
 
-activationFunction: LINEAR
+activationFunction: RELU
 
 randomizeActivationFunctionInHysteria: true

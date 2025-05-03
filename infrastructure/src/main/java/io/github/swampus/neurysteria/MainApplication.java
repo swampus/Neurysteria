@@ -4,15 +4,12 @@ import io.github.swampus.neurosteria.judge.EmotionDrivenLossJudge;
 import io.github.swampus.neurosteria.task.Task;
 import io.github.swampus.neurosteria.task.TaskFactory;
 import io.github.swampus.neurosteria.task.TaskType;
-import io.github.swampus.neurysteria.config.BirthProfileRegistry;
 import io.github.swampus.neurysteria.config.NeuronConfig;
 import io.github.swampus.neurysteria.config.UseCaseFactory;
 import io.github.swampus.neurysteria.model.EmotionState;
 import io.github.swampus.neurysteria.model.Neuron;
 import io.github.swampus.neurysteria.model.activation.ActivationFunctions;
 import io.github.swampus.neurysteria.model.network.NeuronNetwork;
-import io.github.swampus.neurysteria.service.NeuronLifecycleService;
-import io.github.swampus.neurysteria.service.NeuronTerminationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +30,7 @@ public class MainApplication {
         NeuronConfig config = NeuronConfig.builder()
                 .rageThreshold(10)
                 .hysteriaThreshold(20)
-                .rageFromNegativeInput(1.0)
+                .rageFromNegativeInput(0.1)
                 .rageDecayPerTick(0.8)                 // быстро выходит из злобы
                 .activationDecayPerTick(0.01)          // почти не теряет активацию
                 .angerImpactOnEnemies(0.05)
@@ -52,17 +49,15 @@ public class MainApplication {
 
         var ticker = factory.createTickNetworkUseCase(network);
 
-        TaskType type = TaskType.CHAIN_CALCULATOR;
+        TaskType type = TaskType.BROKEN_SEQUENCE;
 
         Task task = TaskFactory.create(type);
 
-        for (int i = 0; i < 100; i++) {
-
+        for (int i = 0; i < 1000; i++) {
 
             task.injectInputs(network);
             EmotionState state = ticker.executeTick();
             task.evaluate(network);
-
 
             if (i % 20 == 0) {
                 TraceLog.dumpNetworkState(i, network);

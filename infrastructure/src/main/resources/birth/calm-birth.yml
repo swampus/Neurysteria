@@ -1,8 +1,8 @@
 calmRageMin: 0.0
 calmRageMax: 1.5
 
-angryRageMin: 3.0
-angryRageMax: 6.0
+angryRageMin: 2.0
+angryRageMax: 5.0
 
 hystericalRageMin: 7.0
 hystericalRageMax: 10.0

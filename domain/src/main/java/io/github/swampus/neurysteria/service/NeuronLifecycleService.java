@@ -9,6 +9,7 @@ import io.github.swampus.neurysteria.model.network.NeuronNetwork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -36,11 +37,11 @@ public class NeuronLifecycleService {
             newNeuron.setActivationFunction(ActivationFunctions.random());
         }
 
-        List<Neuron> usefulPeers = network.getNeurons().stream()
+        List<Neuron> usefulPeers = new java.util.ArrayList<>(network.getNeurons().stream()
                 .filter(n -> n != oldNeuron)
                 .filter(n -> n.getActivation() > 1)
                 .filter(n -> n.getRage() < 5)
-                .toList();
+                .toList());
 
         if (usefulPeers.isEmpty()) {
             log.warn("⚠️ Newborn {} has no useful peers → fallback to random", newNeuron.getId());
@@ -57,19 +58,35 @@ public class NeuronLifecycleService {
             return newNeuron;
         }
 
-        int count = 3 + random.nextInt(3); // 3–5 связей
-        for (int i = 0; i < count; i++) {
-            Neuron peer = usefulPeers.get(random.nextInt(usefulPeers.size()));
-            if (random.nextBoolean()) {
+        int maxFriends = 3;
+        int maxEnemies = 2;
+        int friendCount = 0;
+        int enemyCount = 0;
+
+        if (network.getCurrentState().equals(EmotionState.HYSTERICAL)) {
+            maxFriends = 1;
+            maxEnemies = 66;
+        }
+
+        Collections.shuffle(usefulPeers);
+
+        for (Neuron peer : usefulPeers) {
+            if (friendCount < maxFriends && random.nextBoolean()) {
                 newNeuron.addFriend(peer);
                 peer.addFriend(newNeuron);
-            } else {
+                friendCount++;
+            } else if (enemyCount < maxEnemies) {
                 newNeuron.addEnemy(peer);
                 peer.addEnemy(newNeuron);
+                enemyCount++;
+            }
+
+            if (friendCount >= maxFriends && enemyCount >= maxEnemies) {
+                break;
             }
         }
 
-        log.info("🌱 Newborn {} connected to {} useful peers", newNeuron.getId(), count);
+        log.info("🌱 Newborn {} connected to {} useful peers", newNeuron.getId(), maxFriends);
         return newNeuron;
     }
 

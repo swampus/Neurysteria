@@ -32,7 +32,7 @@ public class UseCaseFactory {
     }
 
     public NeuronNetwork createNetworkWithMutationSupport(List<Neuron> neurons) {
-        return new NeuronNetwork(neurons, mutationService);
+        return new NeuronNetwork(neurons, mutationService, neuronTerminationService);
     }
 
 }

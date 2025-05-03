@@ -1,8 +1,8 @@
 calmRageMin: 1.0
 calmRageMax: 3.0
 
-angryRageMin: 5.0
-angryRageMax: 10.0
+angryRageMin: 2.0
+angryRageMax: 5.0
 
 hystericalRageMin: 12.0
 hystericalRageMax: 18.0
@@ -14,6 +14,6 @@ rageThresholdForObsession: 8.5
 
 activationDecayPerTick: 0.01
 
-activationFunction: TANH
+activationFunction: RELU
 
 randomizeActivationFunctionInHysteria: false
