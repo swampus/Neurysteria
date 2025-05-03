@@ -1,0 +1,10 @@
+calmRageMin: 1.0
+calmRageMax: 3.0
+
+angryRageMin: 5.0
+angryRageMax: 10.0
+
+hystericalRageMin: 12.0
+hystericalRageMax: 18.0
+
+randomizeActivationFunctionInHysteria: false
