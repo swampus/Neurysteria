@@ -16,13 +16,18 @@ import lombok.Builder;
  * @param deathChanceFromRage     Chance of neuron "death" at high rage levels
  * @param baseActivationThreshold --- Activation --- Minimum activation level to trigger behavior
  * @param activationFunction      --- Activation function ---
+ * @param forgetConnectionChance  -- chance to forget connection
+ * @param holyCyclesOfCrusadeAlignment -- undocumented feature
+ * @param rageThresholdForObsession -- undocumented feature
  */
 @Builder
 public record NeuronConfig(double rageThreshold, double hysteriaThreshold, double rageFromNegativeInput,
                            double rageDecayPerTick, double activationDecayPerTick, double angerImpactOnEnemies,
                            double calmShareToFriends, boolean allowMutation, double mutationChance,
                            double deathChanceFromRage, double baseActivationThreshold,
-                           ActivationFunction activationFunction) {
+                           ActivationFunction activationFunction,
+                           double forgetConnectionChance,
+                           int holyCyclesOfCrusadeAlignment, double rageThresholdForObsession) {
 
 
 }

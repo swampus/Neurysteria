@@ -21,10 +21,6 @@ public class UseCaseFactory {
         this.mutationService = new NeuronMutationService();
     }
 
-    public NeuronReproductionUseCase createNeuronReproductionUseCase() {
-        return new NeuronReproductionUseCase(lifecycle);
-    }
-
     public NeuronDeathUseCase createNeuronDeathUseCase() {
         return new NeuronDeathUseCase(lifecycle);
     }

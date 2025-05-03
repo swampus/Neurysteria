@@ -21,6 +21,12 @@ public class SequencePredictionTask implements Task {
 
     @Override
     public void evaluate(NeuronNetwork network) {
+
+        if (network.isObsessed()) {
+            log.warn("🤖 Network is obsessed. It believes it solved the task.");
+            return;
+        }
+
         if (network.getNeurons().size() > 3) {
             var candidate = network.getNeurons().get(3);
             int expectedNext = 4;

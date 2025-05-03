@@ -26,7 +26,7 @@ public class NeuronDeathUseCase {
         if (index >= 0) {
             Neuron newborn = lifecycle.createNewNeuronReplacing(network, target);
             network.getNeurons().set(index, newborn);
-            log.info("Neuron {} died. Replaced by {}", target.getId(), newborn.getId());
+            log.info("💀 Neuron {} died. Replaced by {}", target.getId(), newborn.getId());
         }
     }
 }

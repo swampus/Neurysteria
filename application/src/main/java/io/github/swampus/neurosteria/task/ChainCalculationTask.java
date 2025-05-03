@@ -47,6 +47,12 @@ public class ChainCalculationTask implements Task {
 
     @Override
     public void evaluate(NeuronNetwork network) {
+
+        if (network.isObsessed()) {
+            log.warn("🤖 Network is obsessed. It believes it solved the task.");
+            return;
+        }
+
         var neurons = network.getNeurons();
         if (neurons.size() < 5) return;
 

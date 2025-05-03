@@ -7,4 +7,9 @@ angryRageMax: 10.0
 hystericalRageMin: 12.0
 hystericalRageMax: 18.0
 
+forgetConnectionChance: 0.0
+
+holyCyclesOfCrusadeAlignment: 156
+rageThresholdForObsession: 8.5
+
 randomizeActivationFunctionInHysteria: false

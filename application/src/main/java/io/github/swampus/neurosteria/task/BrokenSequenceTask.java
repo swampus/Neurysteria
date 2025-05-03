@@ -32,6 +32,12 @@ public class BrokenSequenceTask implements Task {
 
     @Override
     public void evaluate(NeuronNetwork network) {
+
+        if (network.isObsessed()) {
+            log.warn("🤖 Network is obsessed. It believes it solved the task.");
+            return;
+        }
+
         if (network.getNeurons().size() > 4) {
             var candidate = network.getNeurons().get(4);
             double output = candidate.getActivation();

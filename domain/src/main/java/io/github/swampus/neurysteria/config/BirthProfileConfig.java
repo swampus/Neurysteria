@@ -16,4 +16,9 @@ public class BirthProfileConfig {
     private double hystericalRageMax;
 
     private boolean randomizeActivationFunctionInHysteria;
+
+    private double forgetConnectionChance;
+
+    private int holyCyclesOfCrusadeAlignment;
+    private double rageThresholdForObsession;
 }

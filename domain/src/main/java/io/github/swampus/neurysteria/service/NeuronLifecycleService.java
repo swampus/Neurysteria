@@ -6,6 +6,8 @@ import io.github.swampus.neurysteria.model.EmotionState;
 import io.github.swampus.neurysteria.model.Neuron;
 import io.github.swampus.neurysteria.model.activation.ActivationFunctions;
 import io.github.swampus.neurysteria.model.network.NeuronNetwork;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Random;
@@ -14,6 +16,8 @@ public class NeuronLifecycleService {
 
     private final BirthProfileRegistry birthRegistry;
     private final Random random = new Random();
+
+    private static final Logger log = LoggerFactory.getLogger(NeuronLifecycleService.class);
 
     public NeuronLifecycleService(BirthProfileRegistry birthRegistry) {
         this.birthRegistry = birthRegistry;
@@ -31,12 +35,30 @@ public class NeuronLifecycleService {
             newNeuron.setActivationFunction(ActivationFunctions.random());
         }
 
-        List<Neuron> others = network.getNeurons();
-        others.stream()
+        List<Neuron> usefulPeers = network.getNeurons().stream()
                 .filter(n -> n != oldNeuron)
-                .limit(3 + random.nextInt(3))
-                .forEach(newNeuron::addFriend);
+                .filter(n -> n.getActivation() > 1.0)
+                .filter(n -> n.getRage() < 5.0)
+                .toList();
 
+        if (usefulPeers.isEmpty()) {
+            log.warn("⚠️ Newborn {} has no useful peers to connect", newNeuron.getId());
+            return newNeuron;
+        }
+
+        int count = 3 + random.nextInt(3); // 3–5 связей
+        for (int i = 0; i < count; i++) {
+            Neuron peer = usefulPeers.get(random.nextInt(usefulPeers.size()));
+            if (random.nextBoolean()) {
+                newNeuron.addFriend(peer);
+                peer.addFriend(newNeuron);
+            } else {
+                newNeuron.addEnemy(peer);
+                peer.addEnemy(newNeuron);
+            }
+        }
+
+        log.info("🌱 Newborn {} connected to {} useful peers", newNeuron.getId(), count);
         return newNeuron;
     }
 

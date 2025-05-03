@@ -35,6 +35,7 @@ public class Neuron {
 
     public void stimulate(double input) {
         activation += input;
+        activation = Math.max(-100.0, Math.min(activation, 100.0));
         if (input < 0) {
             rage += Math.abs(input) * config.rageFromNegativeInput();
         }
@@ -61,17 +62,14 @@ public class Neuron {
     }
 
     public void removeFriend(Neuron neuron) {
-        if (!enemies.contains(neuron)) {
-            enemies.remove(neuron);
-        }
+        enemies.remove(neuron);
     }
 
 
     public void removeEnemy(Neuron neuron) {
-        if (!enemies.contains(neuron)) {
-            enemies.remove(neuron);
-        }
+        enemies.remove(neuron);
     }
+
 
     public void receiveInput(double input) {
         if (input < 0) {
@@ -82,10 +80,29 @@ public class Neuron {
             this.activation += input;
             log.debug("Neuron {} received input: {} → activation = {}", id, input, activation);
         }
+
+
+        this.rage = Math.min(this.rage, 100.0); // 🧯 ограничим ярость
     }
 
     public void resetRage() {
         this.rage = 0;
+    }
+
+    public void shareEnergyWithFriends() {
+        if (!isAngry()) {
+            for (Neuron friend : friends) {
+                friend.stimulate(activation * config.calmShareToFriends());
+            }
+        }
+    }
+
+    public void attackEnemies() {
+        if (isAngry()) {
+            for (Neuron enemy : enemies) {
+                enemy.stimulate(-rage * config.angerImpactOnEnemies());
+            }
+        }
     }
 
     public void interact() {
@@ -98,5 +115,16 @@ public class Neuron {
                 friend.stimulate(activation * config.calmShareToFriends());
             }
         }
+    }
+
+    public void clearConnectionsRandomly() {
+        Random random = new Random();
+        double chance = config.forgetConnectionChance();
+
+        friends.removeIf(f -> random.nextDouble() < chance);
+        enemies.removeIf(e -> random.nextDouble() < chance);
+
+        log.debug("Neuron {} cleared connections with chance {} → friends: {}, enemies: {}",
+                id, chance, friends.size(), enemies.size());
     }
 }
