@@ -9,7 +9,7 @@ hystericalRageMax: 35.0
 
 forgetConnectionChance: 0.3
 
-holyCyclesOfCrusadeAlignment: 156
+holyCyclesOfCrusadeAlignment: 13
 rageThresholdForObsession: 8.5
 
 activationDecayPerTick: 0.01

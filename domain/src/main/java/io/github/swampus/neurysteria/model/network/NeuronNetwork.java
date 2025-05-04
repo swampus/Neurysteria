@@ -76,6 +76,8 @@ public class NeuronNetwork {
                     ➤ Network restored to functional sanity.
                     ➤ Heretical thought patterns purged.
                 """);
+            }else{
+                log.debug("continue crusade remaining {} ", obsessionTicksRemaining);
             }
         }
     }
@@ -97,8 +99,8 @@ public class NeuronNetwork {
             evaluated = EmotionState.CALM;
         }
 
-        if (neurons.size() % 66 == 0 &&
-                averageRage > config.rageThresholdForObsession()) {
+        if (currentState != EmotionState.OBSESSED && neurons.size() % 66 == 0 &&
+                averageRage > config.rageThresholdForObsession() && 0.005 < Math.random()) {
             currentState = EmotionState.OBSESSED;
             obsessionTicksRemaining = config.holyCyclesOfCrusadeAlignment();
             log.error("""
