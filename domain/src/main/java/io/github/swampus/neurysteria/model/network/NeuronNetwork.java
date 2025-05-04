@@ -97,7 +97,7 @@ public class NeuronNetwork {
             evaluated = EmotionState.CALM;
         }
 
-        if (neurons.size() % 666 == 0 &&
+        if (neurons.size() % 66 == 0 &&
                 averageRage > config.rageThresholdForObsession()) {
             currentState = EmotionState.OBSESSED;
             obsessionTicksRemaining = config.holyCyclesOfCrusadeAlignment();
