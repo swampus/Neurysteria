@@ -21,7 +21,6 @@ public class CalmBehavior implements NetworkBehaviorStrategy {
         if (neurons.isEmpty()) return;
 
         for (Neuron neuron : neurons) {
-            // 🔗 Передача энергии друзьям
             if (neuron.getActivation() > 4.0) {
                 for (Neuron friend : neuron.getFriends()) {
                     double impulse = neuron.getActivation() * 0.25;
@@ -31,7 +30,6 @@ public class CalmBehavior implements NetworkBehaviorStrategy {
             }
         }
 
-        // 🌱 Восстановление нейрона
         if (neurons.size() < 50 && Math.random() < 0.05) {
             var template = neurons.get(0);
             Neuron newborn = new Neuron(template.getConfig());

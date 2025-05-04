@@ -51,28 +51,33 @@ public class MainApplication {
 
         Task task = TaskFactory.create(type);
 
-        for (int i = 0; i < 10000; i++) {
+        int totalTicks = 1000;
+        for (int i = 0; i < totalTicks; i++) {
 
             task.injectInputs(network);
             EmotionState state = ticker.executeTick();
             task.evaluate(network);
 
-            if (i % 2 == 0) {
+            if (i % 20 == 0) {
                 TraceLog.dumpNetworkState(i, network);
             }
 
             lossJudge.evaluateAndReact(network, task);
 
-            // log.info("Tick {} → {}", i, state);
-
             if (task.isSolved()) {
-                log.error(" \n \n !!!!!!! Task solved at tick {} \n \n !!!!!", i);
+                log.error(" \n \n !!!!!!! \n Task solved at tick {} \n \n !!!!!", i);
                 break;
             }
+
         }
+        TraceLog.dumpNetworkState(totalTicks, network);
         if(!task.isSolved()){
             log.error(" \n NETWORK FAILED \n ");
         }
+        if (task.isSolved()) {
+            log.error(" \n SOLVED!");
+        }
+
 
     }
 }

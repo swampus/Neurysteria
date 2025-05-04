@@ -33,7 +33,6 @@ public class AngryBehavior implements NetworkBehaviorStrategy {
 
             var config = neuron.getConfig();
 
-            // ☠️ Убийство слабых и злых
             if (neuron.getRage() > config.rageThreshold() * 2 && neuron.getActivation() < 1.0) {
                 network.getNeurons().remove(neuron);
                 for (Neuron other : neurons) {
@@ -44,21 +43,18 @@ public class AngryBehavior implements NetworkBehaviorStrategy {
                 continue;
             }
 
-            // 💣 Заменим бесполезных
             if (neuron.getRage() > config.rageThreshold() * 1.5 && neuron.getActivation() < 1.0) {
                 neuronTerminationService.killAndReplace(network, neuron);
                 log.warn("💢 Neuron {} was too angry and weak. Terminated.", neuron.getId());
                 continue;
             }
 
-            // 📎 Подключение к успешному
             if (!neuron.getFriends().contains(best)) {
                 neuron.addFriend(best);
                 best.addFriend(neuron);
                 log.info("🧠 Neuron {} is now following {}", neuron.getId(), best.getId());
             }
 
-            // ⚡ Укрепление почти успешных
             if (neuron.getActivation() > 4.5 && neuron.getActivation() < 5.5) {
                 List<Neuron> helpers = neurons.stream()
                         .filter(n -> !n.equals(neuron))
@@ -73,13 +69,11 @@ public class AngryBehavior implements NetworkBehaviorStrategy {
                 }
             }
 
-            // 😤 Сброс ярости
             if (neuron.getRage() > 5.0 && Math.random() < 0.1) {
                 neuron.resetRage();
                 log.info("😤 Neuron {} let go of its rage", neuron.getId());
             }
 
-            // ⚔️ Убийство другим нейроном (rage > 20 и activation > 50)
             if (neuron.getRage() > 20 && neuron.getActivation() > 50 && Math.random() < 0.05) {
                 Neuron victim = neurons.stream()
                         .filter(n -> !n.equals(neuron))
@@ -98,7 +92,6 @@ public class AngryBehavior implements NetworkBehaviorStrategy {
             }
         }
 
-        // 🧬 Спавн нового из ярости
         if (best.getActivation() > 90 && best.getRage() > 5.0 && neurons.size() < 70 && Math.random() < 0.2) {
             Neuron newborn = new Neuron(best.getConfig());
             newborn.setActivationFunction(best.getActivationFunction());
@@ -109,7 +102,6 @@ public class AngryBehavior implements NetworkBehaviorStrategy {
             log.warn("🔥 In anger, network spawned a new neuron from {}", best.getId());
         }
 
-        // ⚡ Импульс по всей сети
         if (Math.random() < 0.05) {
             for (Neuron neuron : neurons) {
                 neuron.stimulate(Math.random() * 2 - 1);

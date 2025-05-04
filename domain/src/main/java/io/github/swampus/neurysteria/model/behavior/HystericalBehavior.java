@@ -4,6 +4,7 @@ import io.github.swampus.neurysteria.model.Neuron;
 import io.github.swampus.neurysteria.model.activation.ActivationFunctions;
 import io.github.swampus.neurysteria.model.network.NeuronNetwork;
 import io.github.swampus.neurysteria.service.NeuronMutationService;
+import io.github.swampus.neurysteria.service.NeuronTerminationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,9 +15,11 @@ public class HystericalBehavior implements NetworkBehaviorStrategy {
 
     private static final Logger log = LoggerFactory.getLogger(HystericalBehavior.class);
     private final NeuronMutationService mutationService;
+    private final NeuronTerminationService terminationService;
 
-    public HystericalBehavior(NeuronMutationService mutationService) {
+    public HystericalBehavior(NeuronMutationService mutationService, NeuronTerminationService terminationService) {
         this.mutationService = mutationService;
+        this.terminationService = terminationService;
     }
 
     @Override
@@ -25,7 +28,11 @@ public class HystericalBehavior implements NetworkBehaviorStrategy {
 
         for (Neuron neuron : neurons) {
             mutationService.attemptMutation(neuron);
-
+            if (neuron.getRage() > 100) {
+                if (Math.random() < 0.005) {
+                    terminationService.killWithoutReplacement(network, neuron);
+                }
+            }
             for (int i = 0; i < 3; i++) {
                 Neuron target = neurons.get(new Random().nextInt(neurons.size()));
                 double impulse = neuron.getActivation() * 0.3;

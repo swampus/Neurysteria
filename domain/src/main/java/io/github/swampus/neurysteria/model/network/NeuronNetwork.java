@@ -46,7 +46,7 @@ public class NeuronNetwork {
         behaviorMap = Map.of(
                 EmotionState.CALM, new CalmBehavior(),
                 EmotionState.ANGRY, new AngryBehavior(neuronTerminationService),
-                EmotionState.HYSTERICAL, new HystericalBehavior(mutationService),
+                EmotionState.HYSTERICAL, new HystericalBehavior(mutationService, neuronTerminationService),
                 EmotionState.OBSESSED, new ObsessedBehavior()
         );
     }
