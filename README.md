@@ -31,6 +31,13 @@ Instead of quietly adjusting weights like a good little AI, Neurysteria might:
 
 Despite all this drama, it **can solve non-trivial problems** defined in the `task` package — though never without a few emotional breakdowns.
 
+**Neuron**
+- Each has a unique identity (UUID)
+- An activation level as usual
+- A personal rage meter 🧨 (influenced by failure and frustration)
+- A social graph — other neurons they like (friends) or hate (enemies)
+- A dynamic activation function that can mutate or be replaced under pressure
+
 ---
 
 ## Emotional States & Behaviors
