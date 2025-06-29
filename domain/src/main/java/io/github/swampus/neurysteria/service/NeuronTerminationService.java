@@ -15,7 +15,7 @@ public class NeuronTerminationService {
         this.lifecycle = lifecycle;
     }
 
-    public void killAndReplace(NeuronNetwork network, Neuron target) {
+    public void removeAndReplace(NeuronNetwork network, Neuron target) {
         for (Neuron n : network.getNeurons()) {
             n.removeFriend(target);
             n.removeEnemy(target);
@@ -28,7 +28,7 @@ public class NeuronTerminationService {
         }
     }
 
-    public void killWithoutReplacement(NeuronNetwork network, Neuron target) {
+    public void removeWithoutReplacement(NeuronNetwork network, Neuron target) {
         for (Neuron n : network.getNeurons()) {
             n.removeFriend(target);
             n.removeEnemy(target);

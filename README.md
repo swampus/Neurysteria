@@ -24,10 +24,10 @@
 
 **Neurysteria** is an experimental neural network that doesn’t just learn – it *feels*. Designed to simulate frustration and emotion, it includes distinct emotional states that influence its behavior: **CALM**, **ANGRY**, **HYSTERICAL**, and **OBSESSED**. Each state changes how the network learns, reacts to tasks, and even rewires its own architecture.
 
-Instead of quietly adjusting weights like a good little AI, Neurysteria might:
+Instead of quietly adjusting weights as expected for standard AI, Neurysteria might:
 - Flip out and restructure its topology (HYSTERICAL)
 - Get stuck repeating a failing strategy (OBSESSED)
-- Or angrily switch to a new solving approach like a tilted poker player (ANGRY)
+- Or angrily switch to a new solving approach like a like an unstable system under stress (ANGRY)
 
 Despite all this drama, it **can solve non-trivial problems** defined in the `task` package — though never without a few emotional breakdowns.
 
@@ -43,6 +43,7 @@ Despite all this drama, it **can solve non-trivial problems** defined in the `ta
 ## Emotional States & Behaviors
 
 Neurysteria has four distinct modes of operation, each triggered by its internal *rage meter* based on past failure:
+All emotional terms (ANGRY, HYSTERICAL, OBSESSED) in this project are metaphorical and refer to algorithmic states, not real mental health conditions
 
 ### CALM
 
@@ -57,7 +58,7 @@ In this default state, the network behaves rationally and predictably. It applie
 Triggered by repeated failures. The network becomes emotionally unstable and starts switching strategies rapidly — trying alternative approaches even if they’re risky. Like a frustrated human, it experiments wildly in hopes of a breakthrough.
 
 ### HYSTERICAL
-
+("HYSTERICAL state" here refers to unpredictable, chaotic behavior (not a medical term))
 > *“Tear it all down and start over!”*
 
 The most unstable state. Neurysteria randomly mutates its architecture: deleting neurons, adding new ones, rewiring connections. Chaos reigns. It might solve the task — or destroy itself in the process.
@@ -80,11 +81,11 @@ Neurysteria tracks **internal frustration**. Each time it fails to solve a task,
 
 This mechanism makes training **challenging**:
 - Anger changes learning strategy
-- Hysteria alters the network architecture
+- Hysteria alters the network architecture ( "HYSTERICAL state" here refers to unpredictable, chaotic behavior (not a medical term))
 - Obsession causes loops
 - You never know how it will react next
 
-It’s part machine, part emotional teenager.
+It’s part machine, part unpredictable character.
 
 ---
 
@@ -97,7 +98,7 @@ In the [`task`](./src/main/java/io/github/swampus/neurysteria/domain/task) packa
 - Decision-making
 - Search problems
 
-Sometimes it solves them calmly. Other times it spirals into madness, rewires itself, and *still* stumbles onto the answer.
+Sometimes it solves them calmly. Other times it descends into chaos, rewires itself, and *still* stumbles onto the answer.
 
 Each run is unpredictable — and that’s the point.
 
@@ -114,7 +115,7 @@ Neurysteria is written in **Java 17** and structured using **Clean Architecture*
 - **Customize strategies.** Different learning logic for each state.
 - **Don’t expect determinism.** Each training run is a new emotional journey.
 - **Reward success.** Positive feedback helps stabilize behavior.
-- **Pray it doesn’t get OBSESSED.** Because it *will* ignore you.
+- **Let's hope it doesn't get OBSESSED.** Because it *will* ignore you.
 
 ---
 

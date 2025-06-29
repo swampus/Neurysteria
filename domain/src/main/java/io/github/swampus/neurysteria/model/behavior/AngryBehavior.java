@@ -44,8 +44,8 @@ public class AngryBehavior implements NetworkBehaviorStrategy {
             }
 
             if (neuron.getRage() > config.rageThreshold() * 1.5 && neuron.getActivation() < 1.0) {
-                neuronTerminationService.killAndReplace(network, neuron);
-                log.warn("💢 Neuron {} was too angry and weak. Terminated.", neuron.getId());
+                neuronTerminationService.removeAndReplace(network, neuron);
+                log.warn("💢 Neuron {} was too angry and weak. Removed.", neuron.getId());
                 continue;
             }
 

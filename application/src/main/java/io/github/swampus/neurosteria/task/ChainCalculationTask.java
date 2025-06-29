@@ -59,7 +59,6 @@ public class ChainCalculationTask implements Task {
             double value = out.getActivation();
             if (Math.abs(value - expectedIntermediate) < 1.0) {
                 log.info("✅ Step 2 passed: {} ≈ {}", value, expectedIntermediate);
-                // Подсказка: кого стоит слушать
                 out.addFriend(neurons.get(0));
                 out.addFriend(neurons.get(1));
                 neurons.get(0).addFriend(out);
@@ -73,7 +72,6 @@ public class ChainCalculationTask implements Task {
         double value = out.getActivation();
         if (Math.abs(value - expectedFinal) < 2.0) {
             log.info("✅ FINAL solved! {} ≈ {}", value, expectedFinal);
-            // Усилим связи
             out.addFriend(neurons.get(2));
             out.addFriend(neurons.get(3));
             neurons.get(2).addFriend(out);

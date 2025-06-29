@@ -24,7 +24,7 @@ public class TickNetworkUseCase {
                 if (neuron.getRage() > neuron.getConfig().rageThreshold()) {
                     double chance = neuron.getConfig().deathChanceFromRage();
                     if (Math.random() < chance) {
-                        neuronTerminationService.killAndReplace(neuronNetwork, neuron);
+                        neuronTerminationService.removeAndReplace(neuronNetwork, neuron);
                     }
                 }
             }

@@ -30,7 +30,7 @@ public class HystericalBehavior implements NetworkBehaviorStrategy {
             mutationService.attemptMutation(neuron);
             if (neuron.getRage() > 100) {
                 if (Math.random() < 0.005) {
-                    terminationService.killWithoutReplacement(network, neuron);
+                    terminationService.removeWithoutReplacement(network, neuron);
                 }
             }
             for (int i = 0; i < 3; i++) {
